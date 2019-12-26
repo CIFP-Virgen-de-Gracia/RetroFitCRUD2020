@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     ProductoRest productoRest;
     List<Producto> list = new ArrayList<Producto>();
 
+    // Barra de progreso
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +43,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Cambiamos el título
         setTitle("Retrofit 2 CRUD Productos");
+        
 
         // Enlazamos los elementos interactivos del layout
         btnAddProducto = (Button) findViewById(R.id.btnAdd);
         btnGetProductoList = (Button) findViewById(R.id.btnGet);
         listView = (ListView) findViewById(R.id.listView);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         // Iniciamos la API REST
         if(isNetworkAvailable()) {
@@ -88,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
      * Lista los productos a través de una llamada al servicio REST
      */
     private void listarProductos() {
+        progressBar.setVisibility(View.VISIBLE);
         // Creamos la tarea que llamará al servicio rest y la encolamos
         Call<List<Producto>> call = productoRest.findAll();
         call.enqueue(new Callback<List<Producto>>() {
@@ -106,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("ERROR: ", t.getMessage());
             }
         });
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private boolean isNetworkAvailable() {
