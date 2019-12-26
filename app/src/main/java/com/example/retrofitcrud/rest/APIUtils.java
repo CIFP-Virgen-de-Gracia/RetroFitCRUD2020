@@ -5,6 +5,8 @@ public class APIUtils {
     private static final String server = "10.0.2.2";
     // Puerto del microservicio
     private static final String port = "8080";
+    //Servicio, si usamos otro punto de partida, pero lo hemos definido en el ProuctoRest
+    private static final String servicio = "productos";
     // IP del servicio
     public static final String API_URL = "http://"+server+":"+port+"/";
 

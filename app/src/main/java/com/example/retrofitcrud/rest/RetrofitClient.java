@@ -1,5 +1,6 @@
 package com.example.retrofitcrud.rest;
 
+import android.util.Log;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
