@@ -76,7 +76,7 @@ public class ProductoActivity extends AppCompatActivity {
                 // Vamos a ver en que modo estamos
                 if(productoId != null && productoId.trim().length() > 0){
                     //ctualizar Producto
-                    actualizarProducto(Long.parseLong(productoId), p);
+                    actualizarProducto(Long.valueOf(productoId), p);
                 } else {
                     //salvamos el producto
                     salvarProducto(p);
@@ -88,7 +88,7 @@ public class ProductoActivity extends AppCompatActivity {
         btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eliminarProducto(Integer.parseInt(productoId));
+                eliminarProducto(Long.valueOf(productoId));
                 // Abrimos la pantalla
                 Intent intent = new Intent(ProductoActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -120,15 +120,51 @@ public class ProductoActivity extends AppCompatActivity {
         });
     }
 
-    private void eliminarProducto(int parseInt) {
+    /**
+     * Eliminamos el producto
+     * @param id ID del producto
+     */
+    private void eliminarProducto(Long id) {
+        // Llamamos al servicio a eliminar
+        Call<Producto> call = productoRest.delete(id);
+        call.enqueue(new Callback<Producto>() {
+            @Override
+            public void onResponse(Call<Producto> call, Response<Producto> response) {
+                // Si ok
+                if(response.isSuccessful()){
+                    Toast.makeText(ProductoActivity.this, "Producto Elimnado", Toast.LENGTH_SHORT).show();
+                }
+            }
+            //Si error
+            @Override
+            public void onFailure(Call<Producto> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
     }
 
     /**
      * Actualizamos un producto
-     * @param parseLong
-     * @param p
+     * @param id ID del Producto
+     * @param p Producto
      */
-    private void actualizarProducto(long parseLong, Producto p) {
+    private void actualizarProducto(Long id, Producto p) {
+        // Llamamos al método actualizar
+        Call<Producto> call = productoRest.update(id, p);
+        call.enqueue(new Callback<Producto>() {
+            @Override
+            // Si todo ok
+            public void onResponse(Call<Producto> call, Response<Producto> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(ProductoActivity.this, "Producto actualizado", Toast.LENGTH_SHORT).show();
+                }
+            }
+            // Si error
+            @Override
+            public void onFailure(Call<Producto> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
     }
 
     /**

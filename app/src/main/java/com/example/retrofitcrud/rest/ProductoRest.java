@@ -30,6 +30,6 @@ public interface ProductoRest {
     // Actualiza un producto
     // PUT: http://localhost:8080/productos/{id}
     @PUT("productos/{id}")
-    Call<Producto> update(@Path("id") int id, @Body Producto producto);
+    Call<Producto> update(@Path("id") Long id, @Body Producto producto);
 
 }

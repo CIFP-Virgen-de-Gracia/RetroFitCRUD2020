@@ -1,10 +1,14 @@
 package com.example.retrofitcrud;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.retrofitcrud.model.Producto;
@@ -42,7 +46,11 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
 
         // Iniciamos la API REST
-        productoRest = APIUtils.getService();
+        if(isNetworkAvailable()) {
+            productoRest = APIUtils.getService();
+        }else{
+            Toast.makeText(this, "Es necesaria una conexión a internet", Toast.LENGTH_SHORT).show();
+        }
         
         // Eventos de los botones
         // Botón de obtener
@@ -61,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
                 abrirProducto();
             }
         });
+
+        // Listamos los productos por defecto
+        listarProductos();
 
     }
 
@@ -95,5 +106,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("ERROR: ", t.getMessage());
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService
+                (Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

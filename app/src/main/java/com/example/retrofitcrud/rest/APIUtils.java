@@ -18,4 +18,6 @@ public class APIUtils {
         return RetrofitClient.getClient(API_URL).create(ProductoRest.class);
     }
 
+
+
 }

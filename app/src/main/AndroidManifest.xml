@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.retrofitcrud">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Esto es importante porque si no falla el RSS, cosas del android 9
     android:usesCleartextTraffic="true" al no tener la conexión a internet permitoda
