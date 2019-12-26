@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class Producto {
 
     // Indicamos los campos
-    // ID, columna id de la tabla productos
+    // ID, columna id de la tabla productos. Indicamos como se llamara en el JSON
     @SerializedName("id")
     @Expose
     private Long id;
