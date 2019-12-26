@@ -1,20 +1,27 @@
 package com.example.retrofitcrud;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.example.retrofitcrud.model.Producto;
 import com.example.retrofitcrud.rest.APIUtils;
 import com.example.retrofitcrud.rest.ProductoRest;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductoActivity extends AppCompatActivity {
 
     ProductoRest productoRest;
     EditText edtProductoId;
-    EditText edtEdtProductoNombre;
+    EditText edtProductoNombre;
     Button btnSalvar;
     Button btnEliminar;
     TextView txtProductoId;
@@ -32,7 +39,7 @@ public class ProductoActivity extends AppCompatActivity {
         // Enlazamos los elementos de la interfaz
         txtProductoId = (TextView) findViewById(R.id.txtProductoId);
         edtProductoId = (EditText) findViewById(R.id.edtProductoId);
-        edtEdtProductoNombre = (EditText) findViewById(R.id.edtProductoNombre);
+        edtProductoNombre = (EditText) findViewById(R.id.edtProductoNombre);
         btnSalvar = (Button) findViewById(R.id.btnSalvar);
         btnEliminar = (Button) findViewById(R.id.btnEliminar);
 
@@ -46,7 +53,7 @@ public class ProductoActivity extends AppCompatActivity {
 
         // Pasamos los datos obtenidos
         edtProductoId.setText(productoId);
-        edtEdtProductoNombre.setText(productoNombre);
+        edtProductoNombre.setText(productoNombre);
 
         // Si es un nuevo producto, no lo podemos editar
         if(productoId != null && productoId.trim().length() > 0 ){
@@ -59,6 +66,69 @@ public class ProductoActivity extends AppCompatActivity {
         }
 
         // Eventos de los botones
+
+        // Botón salvar
+        btnSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Producto p = new Producto();
+                p.setNombre(edtProductoNombre.getText().toString());
+                // Vamos a ver en que modo estamos
+                if(productoId != null && productoId.trim().length() > 0){
+                    //ctualizar Producto
+                    actualizarProducto(Long.parseLong(productoId), p);
+                } else {
+                    //salvamos el producto
+                    salvarProducto(p);
+                }
+            }
+        });
+
+        // botón eliminar
+        btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eliminarProducto(Integer.parseInt(productoId));
+                // Abrimos la pantalla
+                Intent intent = new Intent(ProductoActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * Salva un producto mediante RESR
+     * @param p Producto a salvar
+     */
+    private void salvarProducto(Producto p) {
+        // Llamamos al metodo de crear
+        Call<Producto> call = productoRest.create(p);
+        call.enqueue(new Callback<Producto>() {
+            // Si todo ok
+            @Override
+            public void onResponse(Call<Producto> call, Response<Producto> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(ProductoActivity.this, "Producto salvado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            // Si error
+            @Override
+            public void onFailure(Call<Producto> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+    }
+
+    private void eliminarProducto(int parseInt) {
+    }
+
+    /**
+     * Actualizamos un producto
+     * @param parseLong
+     * @param p
+     */
+    private void actualizarProducto(long parseLong, Producto p) {
     }
 
     /**
