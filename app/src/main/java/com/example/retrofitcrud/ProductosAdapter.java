@@ -37,20 +37,28 @@ public class ProductosAdapter extends ArrayAdapter<Producto> {
         TextView txtUsername = (TextView) rowView.findViewById(R.id.txtPorductoNombre);
 
         txtUserId.setText(String.format("#ID: %d", productos.get(pos).getId()));
-        txtUsername.setText(String.format("USER NAME: %s", productos.get(pos).getNombre()));
+        txtUsername.setText(String.format("Nombre Producto: %s", productos.get(pos).getNombre()));
 
         // Abrimos la actividad al hacer click en un elemento de la lista
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //start Activity User Form
-                Intent intent = new Intent(context, ProductoActivity.class);
-                intent.putExtra("producto_id", String.valueOf(productos.get(pos).getId()));
-                intent.putExtra("producto_nombre", productos.get(pos).getNombre());
-                context.startActivity(intent);
+                //llamamos a abrir producto
+                abrirProducto(pos);
             }
         });
 
         return rowView;
+    }
+
+    /**
+     * Abre la actividad Producto
+     * @param pos posición del objeto a mandar
+     */
+    private void abrirProducto(int pos) {
+        Intent intent = new Intent(context, ProductoActivity.class);
+        intent.putExtra("producto_id", String.valueOf(productos.get(pos).getId()));
+        intent.putExtra("producto_nombre", productos.get(pos).getNombre());
+        context.startActivity(intent);
     }
 }

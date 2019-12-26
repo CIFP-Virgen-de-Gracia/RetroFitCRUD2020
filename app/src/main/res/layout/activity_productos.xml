@@ -12,7 +12,7 @@
             android:orientation="vertical" tools:ignore="MissingConstraints">
 
         <TextView
-                android:id="@+id/txtUId"
+                android:id="@+id/txtProductoId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ID"
@@ -21,14 +21,14 @@
         />
 
         <EditText
-                android:id="@+id/edtUId"
+                android:id="@+id/edtProductoId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
         />
 
         <TextView
-                android:id="@+id/txtUIProductoNombre"
+                android:id="@+id/txtProductoNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nombre Producto"
@@ -43,7 +43,7 @@
         />
 
         <Button
-                android:id="@+id/btnSsalvar"
+                android:id="@+id/btnSalvar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Salvar"

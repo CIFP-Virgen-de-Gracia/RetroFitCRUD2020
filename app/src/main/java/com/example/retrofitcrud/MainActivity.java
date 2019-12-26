@@ -1,5 +1,6 @@
 package com.example.retrofitcrud;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         productoRest = APIUtils.getService();
         
         // Eventos de los botones
+        // Botón de obtener
         btnGetProductoList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,8 +54,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Botón de añadir
+        btnAddProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirProducto();
+            }
+        });
+
     }
 
+    /**
+     * Abre la actividad Producto
+     */
+    private void abrirProducto() {
+        Intent intent = new Intent(MainActivity.this, ProductoActivity.class);
+        intent.putExtra("producto_nombre", "");
+        startActivity(intent);
+    }
+
+    /**
+     * Lista los productos a través de una llamada al servicio REST
+     */
     private void listarProductos() {
         // Creamos la tarea que llamará al servicio rest y la encolamos
         Call<List<Producto>> call = productoRest.findAll();
